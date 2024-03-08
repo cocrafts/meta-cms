@@ -1,38 +1,22 @@
+/* eslint-disable turbo/no-undeclared-env-vars */
 "use client";
 
-import "./globals.css";
+import "./globals.css"; 
 import React, { useEffect, useState } from "react";
-import {
-  CssBaseline,
-  Typography,
-  Container,
-  AppBar,
-  Toolbar,
-  IconButton,
-  Box,
-  Drawer,
-  Button,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  Divider,
-  Avatar,
-} from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import List from "@mui/material/List";
-import GoogleIcon from "@mui/icons-material/Google";
+import { CssBaseline, Drawer, Container } from "@mui/material";
+import Navbar from "@repo/ui/navbar";
+import Sidebar from "@repo/ui/sidebar";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
-import Link from "next/link";
 import { signOut } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDXzGwhPfxtQEEEeechJABRShSytmzpTrg",
-  authDomain: "metacms-14850.firebaseapp.com",
-  projectId: "metacms-14850",
-  storageBucket: "metacms-14850.appspot.com",
-  messagingSenderId: "576776784274",
-  appId: "1:576776784274:web:f451917efe27a6a722594b",
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
 // Initialize Firebase
@@ -66,39 +50,13 @@ export default function RootLayout({
     return () => unsubscribe();
   }, []);
 
-  const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
-        <Link href="/" style={{ textDecoration: "none" }}>
-          MetaCMS
-        </Link>
-      </Typography>
-      <Divider />
-      <List>
-        {["Dashboard", "Profile"].map((item) => (
-          <ListItem key={item} disablePadding>
-            <ListItemButton sx={{ textAlign: "center" }}>
-              <Link
-                href={`/${item.toLowerCase()}`}
-                style={{ textDecoration: "none" }}
-              >
-                {item}
-              </Link>
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </Box>
-  );
-
   const handleSignInWithGoogle = async () => {
     const provider = new firebase.auth.GoogleAuthProvider();
     try {
       const result = await auth.signInWithPopup(provider);
       const user = result.user;
       if (user) {
-        const idToken = await user.getIdToken();
-        // sendTokenToBackend(idToken);
+        // const firebaseUserIdToken  = await user.getIdToken();
       }
     } catch (error) {
       console.error(error);
@@ -116,53 +74,17 @@ export default function RootLayout({
       });
   };
 
-  // const sendTokenToBackend = (token: string) => {
-  //   fetch("/api/auth/user", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({ token }),
-  //   })
-  //     .then(() => {})
-  //     .catch((error) => {
-  //       console.error("Error:", error);
-  //     });
-  // };
-
   return (
     <html lang="en">
       <body>
         <CssBaseline />
-        <AppBar position="static" component="nav" className="appbar">
-          <Toolbar>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              edge="start"
-              onClick={handleDrawerToggle}
-              sx={{ mr: 2 }}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              MetaCMS
-            </Typography>
-            {isSignin ? (
-              <>
-                <Avatar src={userPhotoURL} alt="Avatar" />
-                <Button color="inherit" onClick={handleSignOut}>
-                  Đăng xuất 
-                </Button>
-              </>
-            ) : (
-              <Button color="inherit" onClick={handleSignInWithGoogle}>
-                <GoogleIcon sx={{ mr: 1 }} />
-                Đăng nhập bằng Google
-              </Button>
-            )}
-          </Toolbar>
-        </AppBar>
+        <Navbar
+          isSignin={isSignin}
+          userPhotoURL={userPhotoURL}
+          handleDrawerToggle={handleDrawerToggle}
+          handleSignInWithGoogle={handleSignInWithGoogle}
+          handleSignOut={handleSignOut}
+        />
         <nav>
           <Drawer
             variant="temporary"
@@ -179,7 +101,7 @@ export default function RootLayout({
               "& .MuiDrawer-paper": { boxSizing: "border-box", width: 240 },
             }}
           >
-            {drawer}
+            <Sidebar handleDrawerToggle={handleDrawerToggle} />
           </Drawer>
         </nav>
         <Container maxWidth="lg">{children}</Container>

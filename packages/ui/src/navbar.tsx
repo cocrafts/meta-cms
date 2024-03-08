@@ -2,17 +2,24 @@ import React from "react";
 import {
   AppBar,
   Toolbar,
-  IconButton,
   Typography,
-  Avatar,
+  IconButton,
   Button,
+  Avatar,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import GoogleIcon from "@mui/icons-material/Google";
 import Link from "next/link";
-import { signOut } from "firebase/auth";
 
-const AppBarComponent = ({
+interface NavbarProps {
+  isSignin: boolean;
+  userPhotoURL: string;
+  handleDrawerToggle: () => void;
+  handleSignInWithGoogle: () => void;
+  handleSignOut: () => void;
+}
+
+const Navbar: React.FC<NavbarProps> = ({
   isSignin,
   userPhotoURL,
   handleDrawerToggle,
@@ -27,12 +34,11 @@ const AppBarComponent = ({
           aria-label="open drawer"
           edge="start"
           onClick={handleDrawerToggle}
-          sx={{ mr: 2 }}
         >
           <MenuIcon />
         </IconButton>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          <Link href="/" style={{ textDecoration: "none", color: "inherit" }}>
+          <Link href="/" style={{ textDecoration: "none", color: "white" }}>
             MetaCMS
           </Link>
         </Typography>
@@ -54,4 +60,4 @@ const AppBarComponent = ({
   );
 };
 
-export default AppBarComponent;
+export default Navbar;
