@@ -1,4 +1,3 @@
-/* eslint-disable turbo/no-undeclared-env-vars */
 "use client";
 
 import "./globals.css"; 
@@ -6,22 +5,11 @@ import React, { useEffect, useState } from "react";
 import { CssBaseline, Drawer, Container } from "@mui/material";
 import Navbar from "@repo/ui/navbar";
 import Sidebar from "@repo/ui/sidebar";
-import firebase from "firebase/compat/app";
-import "firebase/compat/auth";
 import { signOut } from "firebase/auth";
+import firebaseApp from "../../../firebase"
+import { send } from "process";
 
-const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-};
-
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
+const auth = firebaseApp.auth();
 
 export default function RootLayout({
   children,
@@ -51,12 +39,23 @@ export default function RootLayout({
   }, []);
 
   const handleSignInWithGoogle = async () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
+    const provider = new firebaseApp.auth.GoogleAuthProvider();
     try {
       const result = await auth.signInWithPopup(provider);
       const user = result.user;
       if (user) {
-        // const firebaseUserIdToken  = await user.getIdToken();
+        const firebaseUserIdToken  = await user.getIdToken();
+        console.log(firebaseUserIdToken);
+        const response = await fetch("http://localhost:8080/api/signin", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${firebaseUserIdToken}`
+          },
+          body: JSON.stringify({ token: firebaseUserIdToken }),
+        });
+        const data = await response.json();
+        console.log(data);
       }
     } catch (error) {
       console.error(error);
