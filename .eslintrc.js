@@ -1,10 +1,15 @@
-// This configuration only applies to the package manager root.
-/** @type {import("eslint").Linter.Config} */
 module.exports = {
-  ignorePatterns: ["apps/**", "packages/**"],
-  extends: ["@repo/eslint-config/library.js"],
-  parser: "@typescript-eslint/parser",
-  parserOptions: {
-    project: true,
-  },
+	root: true,
+	extends: ['@walless/eslint-config/next'],
+	ignorePatterns: ['node_modules'],
+	env: {
+		node: true,
+	},
+	globals: {
+		window: true,
+		document: true,
+		navigator: true,
+		fetch: true,
+		WebAssembly: true,
+	},
 };
