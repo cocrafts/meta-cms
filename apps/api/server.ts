@@ -1,16 +1,15 @@
-import { admin } from 'firebase-admin';
 import { json } from 'body-parser';
 import cors from 'cors';
 
-import { state } from './util';
+import { checkToken } from './middleware/checkToken';
 
 export const configure = async (express) => {
 	const app = express();
-	// app.use(json());
-	// app.use(cors());
+	app.use(json());
+	app.use(cors());
 
-	app.get('/greeting', (req, res) => {
-		return res.status(200).send(`hello world ${state.counter++}!`)
+	app.post('/api/signin', checkToken, (req, res) => {
+		res.json(req.decodedToken);
 	});
 
 	return app;

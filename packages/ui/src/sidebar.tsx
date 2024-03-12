@@ -1,4 +1,4 @@
-import React from "react";
+import type { FC } from "react";
 import {
   Box,
   Typography,
@@ -13,7 +13,7 @@ interface SidebarProps {
   handleDrawerToggle: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ handleDrawerToggle }) => {
+const Sidebar: FC<SidebarProps> = ({ handleDrawerToggle }) => {
   return (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
       <Typography variant="h6" sx={{ my: 2 }}>

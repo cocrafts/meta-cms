@@ -1,4 +1,4 @@
-import React from "react";
+import type { FC } from "react";
 import {
   AppBar,
   Toolbar,
@@ -19,7 +19,7 @@ interface NavbarProps {
   handleSignOut: () => void;
 }
 
-const Navbar: React.FC<NavbarProps> = ({
+const Navbar: FC<NavbarProps> = ({
   isSignin,
   userPhotoURL,
   handleDrawerToggle,
