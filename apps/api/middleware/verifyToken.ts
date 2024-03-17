@@ -1,16 +1,20 @@
 import admin from 'firebase-admin';
 
-import serviceAccount from '../service-account-key.json';
+export const environments = {
+	firebaseProjectId: process.env.FIREBASE_PROJECT_ID,
+	firebaseClientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+	firebasePrivateKey: process.env.FIREBASE_PRIVATE_KEY,
+};
 
 admin.initializeApp({
 	credential: admin.credential.cert({
-		projectId: serviceAccount.project_id,
-		clientEmail: serviceAccount.client_email,
-		privateKey: serviceAccount.private_key,
+		projectId: environments.firebaseProjectId,
+		clientEmail: environments.firebaseClientEmail,
+		privateKey: environments.firebasePrivateKey,
 	}),
 });
 
-export const checkToken = async (req, res, next) => {
+export const verifyToken = async (req, res, next) => {
 	const authHeader = req.headers.authorization;
 	if (!authHeader) {
 		return res.status(401).send('Unauthorized');

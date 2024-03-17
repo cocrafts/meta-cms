@@ -1,14 +1,14 @@
 import { json } from 'body-parser';
 import cors from 'cors';
 
-import { checkToken } from './middleware/checkToken';
+import { verifyToken } from './middleware/verifyToken';
 
 export const configure = async (express) => {
 	const app = express();
 	app.use(json());
 	app.use(cors());
 
-	app.post('/api/signin', checkToken, (req, res) => {
+	app.post('/api/signin', verifyToken, (req, res) => {
 		res.json(req.decodedToken);
 	});
 
