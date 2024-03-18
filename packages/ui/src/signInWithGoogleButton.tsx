@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 'use client';
 
-import { type FC, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import GoogleIcon from '@mui/icons-material/Google';
 import { Avatar, Button } from '@mui/material';
 import { signOut } from 'firebase/auth';
@@ -24,7 +25,6 @@ if (!firebase.apps.length) {
 const auth = firebase.auth();
 
 const signinWithGoogleButton = () => {
-	const [sidebarOpen, setSidebarOpen] = useState(false);
 	const [isSignin, setIsSignin] = useState(false);
 	const [userPhotoURL, setUserPhotoURL] = useState('');
 
