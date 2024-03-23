@@ -2,7 +2,14 @@
 
 import { useState } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
-import { AppBar, Drawer, IconButton, Toolbar, Typography } from '@mui/material';
+import {
+	AppBar,
+	Drawer,
+	IconButton,
+	InputBase,
+	Toolbar,
+	Typography,
+} from '@mui/material';
 import Link from 'next/link';
 
 import Sidebar from './sidebar';
@@ -14,6 +21,7 @@ const Navbar = () => {
 	const handleDrawerToggle = () => {
 		setSidebarOpen(!sidebarOpen);
 	};
+
 	return (
 		<>
 			<AppBar position="static" component="nav" className="appbar">
@@ -27,10 +35,24 @@ const Navbar = () => {
 						<MenuIcon />
 					</IconButton>
 					<Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-						<Link href="/" style={{ textDecoration: 'none', color: 'white' }}>
+						<Link
+							href="/"
+							style={{ textDecoration: 'none', color: 'white', marginLeft: 10 }}
+						>
 							MetaCMS
 						</Link>
 					</Typography>
+					<div style={{ position: 'relative' }}>
+						<InputBase
+							placeholder="Search..."
+							inputProps={{ 'aria-label': 'search' }}
+							sx={{
+								color: 'inherit',
+								'& .MuiInputBase-input': { width: '150px' },
+								mx: 3,
+							}}
+						/>
+					</div>
 					<SigninWithGoogleButton />
 				</Toolbar>
 			</AppBar>

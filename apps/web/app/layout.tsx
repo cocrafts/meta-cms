@@ -1,6 +1,6 @@
 import type React from 'react';
 import { Container, CssBaseline } from '@mui/material';
-import Navbar from '@repo/ui/navbar';
+import MainBar from '@repo/ui/mainbar';
 
 import './globals.css';
 
@@ -13,7 +13,7 @@ export default function RootLayout({
 		<html lang="en">
 			<body>
 				<CssBaseline />
-				<Navbar />
+				<MainBar />
 				<Container maxWidth="lg">{children}</Container>
 			</body>
 		</html>

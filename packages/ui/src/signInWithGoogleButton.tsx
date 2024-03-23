@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from 'react';
 import GoogleIcon from '@mui/icons-material/Google';
-import { Avatar, Button } from '@mui/material';
+import { Avatar, Button, Menu, MenuItem, Typography } from '@mui/material';
 import { signOut } from 'firebase/auth';
 import firebase from 'firebase/compat/app';
 
@@ -24,18 +24,22 @@ if (!firebase.apps.length) {
 
 const auth = firebase.auth();
 
-const signinWithGoogleButton = () => {
-	const [isSignin, setIsSignin] = useState(false);
+const SigninWithGoogleButton = () => {
+	const [isSignedIn, setIsSignedIn] = useState(false);
 	const [userPhotoURL, setUserPhotoURL] = useState('');
+	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+	const [userName, setUserName] = useState('');
 
 	useEffect(() => {
 		const unsubscribe = auth.onAuthStateChanged((user) => {
 			if (user) {
-				setIsSignin(true);
+				setIsSignedIn(true);
 				setUserPhotoURL(user.photoURL || '');
+				setUserName(user.displayName || '');
 			} else {
-				setIsSignin(false);
+				setIsSignedIn(false);
 				setUserPhotoURL('');
+				setUserName('');
 			}
 		});
 
@@ -69,26 +73,55 @@ const signinWithGoogleButton = () => {
 	const handleSignOut = () => {
 		signOut(auth)
 			.then(() => {
-				setIsSignin(false);
+				setIsSignedIn(false);
 				setUserPhotoURL('');
+				setUserName('');
 			})
 			.catch((error) => {
 				console.error(error);
 			});
 	};
 
+	const handleMenuOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
+		setAnchorEl(event.currentTarget);
+	};
+
+	const handleMenuClose = () => {
+		setAnchorEl(null);
+	};
+
 	return (
 		<>
-			{isSignin ? (
+			{isSignedIn ? (
 				<>
-					<Avatar src={userPhotoURL} alt="Avatar" />
-					<Button color="inherit" onClick={handleSignOut}>
-						Đăng xuất
+					<Button
+						color="inherit"
+						onClick={handleMenuOpen}
+						startIcon={
+							<Avatar
+								src={userPhotoURL}
+								alt="Avatar"
+								sx={{ height: 35, width: 35 }}
+							/>
+						}
+					>
+						{userName}
 					</Button>
+					<Menu
+						id="user-menu"
+						anchorEl={anchorEl}
+						open={Boolean(anchorEl)}
+						onClose={handleMenuClose}
+					>
+						<MenuItem onClick={handleSignOut}>Đăng xuất</MenuItem>
+					</Menu>
 				</>
 			) : (
-				<Button color="inherit" onClick={handleSignInWithGoogle}>
-					<GoogleIcon sx={{ mr: 1 }} />
+				<Button
+					color="inherit"
+					onClick={handleSignInWithGoogle}
+					startIcon={<GoogleIcon />}
+				>
 					Đăng nhập bằng Google
 				</Button>
 			)}
@@ -96,4 +129,4 @@ const signinWithGoogleButton = () => {
 	);
 };
 
-export default signinWithGoogleButton;
+export default SigninWithGoogleButton;
