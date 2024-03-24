@@ -14,21 +14,21 @@ admin.initializeApp({
 	}),
 });
 
-export const verifyToken = async (req, res, next) => {
+export const prepareAuthContext = async (req, res, next) => {
 	const authHeader = req.headers.authorization;
-	if (!authHeader) {
-		return res.status(401).send('Unauthorized');
-	}
+	// if (!authHeader) {
+	// 	return res.status(401).send('Unauthorized');
+	// }
 	const tokenParts = authHeader.split(' ');
-	if (tokenParts.length !== 2 || tokenParts[0] !== 'Bearer') {
-		return res.status(401).send('Unauthorized');
-	}
+	// if (tokenParts.length !== 2 || tokenParts[0] !== 'Bearer') {
+	// 	return res.status(401).send('Unauthorized');
+	// }
 	const idToken = tokenParts[1];
 	try {
 		const decodedToken = await admin.auth().verifyIdToken(idToken);
 		req.decodedToken = decodedToken;
 		next();
 	} catch (error) {
-		res.status(401).send('Unauthorized');
+		res.status(401).send('Fail to verify token');
 	}
 };

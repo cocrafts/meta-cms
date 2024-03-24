@@ -1,14 +1,14 @@
-import type React from 'react';
+import type { FC, ReactNode } from 'react';
 import { Container, CssBaseline } from '@mui/material';
-import MainBar from '@repo/ui/mainbar';
+import { MainBar } from '@repo/ui';
 
 import './globals.css';
 
-export default function RootLayout({
-	children,
-}: {
-	children: React.ReactNode;
-}) {
+interface Props {
+	children: ReactNode;
+}
+
+const RootLayout: FC<Props> = ({ children }) => {
 	return (
 		<html lang="en">
 			<body>
@@ -18,4 +18,6 @@ export default function RootLayout({
 			</body>
 		</html>
 	);
-}
+};
+
+export default RootLayout;

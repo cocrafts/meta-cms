@@ -1,9 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 import {
 	AppBar,
+	Badge,
 	Drawer,
 	IconButton,
 	InputBase,
@@ -15,7 +17,7 @@ import Link from 'next/link';
 import Sidebar from './sidebar';
 import SigninWithGoogleButton from './signInWithGoogleButton';
 
-const Navbar = () => {
+const MainBar = () => {
 	const [sidebarOpen, setSidebarOpen] = useState(false);
 
 	const handleDrawerToggle = () => {
@@ -23,7 +25,7 @@ const Navbar = () => {
 	};
 
 	return (
-		<>
+		<Fragment>
 			<AppBar position="static" component="nav" className="appbar">
 				<Toolbar>
 					<IconButton
@@ -35,48 +37,58 @@ const Navbar = () => {
 						<MenuIcon />
 					</IconButton>
 					<Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-						<Link
-							href="/"
-							style={{ textDecoration: 'none', color: 'white', marginLeft: 10 }}
-						>
+						<Link href="/" style={styles.link}>
 							MetaCMS
 						</Link>
 					</Typography>
-					<div style={{ position: 'relative' }}>
-						<InputBase
-							placeholder="Search..."
-							inputProps={{ 'aria-label': 'search' }}
-							sx={{
-								color: 'inherit',
-								'& .MuiInputBase-input': { width: '150px' },
-								mx: 3,
-							}}
-						/>
-					</div>
+					<InputBase
+						placeholder="Search..."
+						inputProps={{ 'aria-label': 'search' }}
+						sx={{
+							color: 'inherit',
+							'& .MuiInputBase-input': { width: '150px' },
+							mx: 4,
+						}}
+					/>
+					<IconButton
+						size="large"
+						aria-label="show notifications"
+						color="inherit"
+						sx={{ mx: 3 }}
+					>
+						<Badge badgeContent={1} color="error">
+							<NotificationsIcon />
+						</Badge>
+					</IconButton>
 					<SigninWithGoogleButton />
 				</Toolbar>
 			</AppBar>
-			<nav>
-				<Drawer
-					variant="temporary"
-					open={sidebarOpen}
-					onClose={handleDrawerToggle}
-					ModalProps={{
-						keepMounted: true,
-					}}
-					sx={{
-						display: 'block',
-						'@media (min-width:600px)': {
-							display: 'block',
-						},
-						'& .MuiDrawer-paper': { boxSizing: 'border-box', width: 240 },
-					}}
-				>
-					<Sidebar handleDrawerToggle={handleDrawerToggle} />
-				</Drawer>
-			</nav>
-		</>
+			<Drawer
+				variant="temporary"
+				open={sidebarOpen}
+				onClose={handleDrawerToggle}
+				ModalProps={{
+					keepMounted: true,
+				}}
+				sx={styles.inputBase}
+			>
+				<Sidebar handleDrawerToggle={handleDrawerToggle} />
+			</Drawer>
+		</Fragment>
 	);
 };
 
-export default Navbar;
+export default MainBar;
+
+const styles = {
+	link: {
+		textDecoration: 'none',
+		color: 'white',
+		marginLeft: 10,
+	},
+	inputBase: {
+		color: 'inherit',
+		'& .MuiInputBase-input': { width: '150px' },
+		mx: 4,
+	},
+};

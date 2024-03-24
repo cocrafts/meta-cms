@@ -6,54 +6,19 @@ import {
 	Settings,
 	Storage,
 } from '@mui/icons-material';
-import {
-	Box,
-	Divider,
-	List,
-	ListItem,
-	ListItemButton,
-	Typography,
-} from '@mui/material';
-import Link from 'next/link';
+import { Box, Divider, Link, List, Typography } from '@mui/material';
+
+import SidebarItem from './sideBarItem';
 
 interface SidebarProps {
 	handleDrawerToggle: () => void;
 }
 
-interface SidebarItemProps {
-	href: string;
-	text: string;
-	icon: JSX.Element;
-}
-
-const SidebarItem: FC<SidebarItemProps> = ({ href, text, icon }) => (
-	<ListItem disablePadding sx={styles.listItem}>
-		<ListItemButton
-			component={Link}
-			href={href}
-			style={{ textDecoration: 'none' }}
-		>
-			{icon}
-			<Typography variant="body1" sx={styles.text}>
-				{text}
-			</Typography>
-		</ListItemButton>
-	</ListItem>
-);
-
 const Sidebar: FC<SidebarProps> = ({ handleDrawerToggle }) => {
 	return (
 		<Box onClick={handleDrawerToggle}>
 			<Typography variant="h6" sx={styles.title}>
-				<Link
-					href="/"
-					style={{
-						textDecoration: 'none',
-						display: 'flex',
-						alignItems: 'center',
-						justifyContent: 'center',
-					}}
-				>
+				<Link href="/" style={styles.linkTitle}>
 					MetaCMS
 				</Link>
 			</Typography>
@@ -105,17 +70,17 @@ const styles = {
 		my: 2,
 		textAlign: 'center',
 	},
+	linkTitle: {
+		textDecoration: 'none',
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
 	icon: {
 		mr: 1,
 	},
 	list: {
 		padding: 0,
-	},
-	listItem: {
-		padding: '5px 0',
-	},
-	text: {
-		marginLeft: '8px',
 	},
 	typography: {
 		display: 'block',

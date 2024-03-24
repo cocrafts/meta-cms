@@ -1,9 +1,8 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 'use client';
 
 import { useEffect, useState } from 'react';
 import GoogleIcon from '@mui/icons-material/Google';
-import { Avatar, Button, Menu, MenuItem, Typography } from '@mui/material';
+import { Avatar, Button, Menu, MenuItem, Tooltip } from '@mui/material';
 import { signOut } from 'firebase/auth';
 import firebase from 'firebase/compat/app';
 
@@ -28,18 +27,15 @@ const SigninWithGoogleButton = () => {
 	const [isSignedIn, setIsSignedIn] = useState(false);
 	const [userPhotoURL, setUserPhotoURL] = useState('');
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-	const [userName, setUserName] = useState('');
 
 	useEffect(() => {
 		const unsubscribe = auth.onAuthStateChanged((user) => {
 			if (user) {
 				setIsSignedIn(true);
 				setUserPhotoURL(user.photoURL || '');
-				setUserName(user.displayName || '');
 			} else {
 				setIsSignedIn(false);
 				setUserPhotoURL('');
-				setUserName('');
 			}
 		});
 
@@ -75,18 +71,17 @@ const SigninWithGoogleButton = () => {
 			.then(() => {
 				setIsSignedIn(false);
 				setUserPhotoURL('');
-				setUserName('');
 			})
 			.catch((error) => {
 				console.error(error);
 			});
 	};
 
-	const handleMenuOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
+	const open = Boolean(anchorEl);
+	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
 		setAnchorEl(event.currentTarget);
 	};
-
-	const handleMenuClose = () => {
+	const handleClose = () => {
 		setAnchorEl(null);
 	};
 
@@ -94,26 +89,36 @@ const SigninWithGoogleButton = () => {
 		<>
 			{isSignedIn ? (
 				<>
-					<Button
-						color="inherit"
-						onClick={handleMenuOpen}
-						startIcon={
-							<Avatar
-								src={userPhotoURL}
-								alt="Avatar"
-								sx={{ height: 35, width: 35 }}
-							/>
-						}
-					>
-						{userName}
-					</Button>
+					<Tooltip title="Account settings">
+						<Button
+							id="basic-button"
+							color="inherit"
+							aria-controls={open ? 'basic-menu' : undefined}
+							aria-haspopup="true"
+							aria-expanded={open ? 'true' : undefined}
+							onClick={handleClick}
+						>
+							<Avatar src={userPhotoURL} alt="Avatar" />
+						</Button>
+					</Tooltip>
 					<Menu
-						id="user-menu"
+						id="basic-menu"
 						anchorEl={anchorEl}
-						open={Boolean(anchorEl)}
-						onClose={handleMenuClose}
+						open={open}
+						onClose={handleClose}
+						MenuListProps={{
+							'aria-labelledby': 'basic-button',
+						}}
 					>
-						<MenuItem onClick={handleSignOut}>Đăng xuất</MenuItem>
+						<MenuItem onClick={handleClose}>Profile</MenuItem>
+						<MenuItem
+							onClick={() => {
+								handleClose();
+								handleSignOut();
+							}}
+						>
+							Logout
+						</MenuItem>
 					</Menu>
 				</>
 			) : (
@@ -122,7 +127,7 @@ const SigninWithGoogleButton = () => {
 					onClick={handleSignInWithGoogle}
 					startIcon={<GoogleIcon />}
 				>
-					Đăng nhập bằng Google
+					Sign in with GG
 				</Button>
 			)}
 		</>
