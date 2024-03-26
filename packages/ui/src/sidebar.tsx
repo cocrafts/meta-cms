@@ -6,7 +6,8 @@ import {
 	Settings,
 	Storage,
 } from '@mui/icons-material';
-import { Box, Divider, Link, List, Typography } from '@mui/material';
+import { Box, Divider, List, Typography } from '@mui/material';
+import Link from 'next/link';
 
 import SidebarItem from './sideBarItem';
 
