@@ -1,31 +1,19 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import type { MouseEvent } from 'react';
+import { useState } from 'react';
 import GoogleIcon from '@mui/icons-material/Google';
 import { Avatar, Button, Menu, MenuItem, Tooltip } from '@mui/material';
 import { signOut } from 'firebase/auth';
 import firebase from 'firebase/compat/app';
+import { useSnapshot } from 'valtio';
 
 import auth from '../../../apps/web/app/utils/config';
+import { useUserProfile } from '../../../apps/web/app/utils/hook/index';
 
 const SigninWithGoogleButton = () => {
-	const [isSignedIn, setIsSignedIn] = useState(false);
-	const [userPhotoURL, setUserPhotoURL] = useState('');
+	const userProfile = useUserProfile();
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-	useEffect(() => {
-		const unsubscribe = auth.onAuthStateChanged((user) => {
-			if (user) {
-				setIsSignedIn(true);
-				setUserPhotoURL(user.photoURL || '');
-			} else {
-				setIsSignedIn(false);
-				setUserPhotoURL('');
-			}
-		});
-
-		return () => unsubscribe();
-	}, []);
 
 	const handleSignInWithGoogle = async () => {
 		const provider = new firebase.auth.GoogleAuthProvider();
@@ -54,8 +42,8 @@ const SigninWithGoogleButton = () => {
 	const handleSignOut = () => {
 		signOut(auth)
 			.then(() => {
-				setIsSignedIn(false);
-				setUserPhotoURL('');
+				userProfile.isSignedIn = false;
+				userProfile.profile.photoURL = '';
 			})
 			.catch((error) => {
 				console.error(error);
@@ -63,16 +51,17 @@ const SigninWithGoogleButton = () => {
 	};
 
 	const open = Boolean(anchorEl);
-	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+	const handleMenuOpen = (event: MouseEvent<HTMLButtonElement>) => {
 		setAnchorEl(event.currentTarget);
 	};
-	const handleClose = () => {
+	const handleMenuClose = () => {
 		setAnchorEl(null);
 	};
 
+	const snap = useSnapshot(userProfile);
 	return (
 		<>
-			{isSignedIn ? (
+			{snap.isSignedIn ? (
 				<>
 					<Tooltip title="Account settings">
 						<Button
@@ -81,24 +70,24 @@ const SigninWithGoogleButton = () => {
 							aria-controls={open ? 'basic-menu' : undefined}
 							aria-haspopup="true"
 							aria-expanded={open ? 'true' : undefined}
-							onClick={handleClick}
+							onClick={handleMenuOpen}
 						>
-							<Avatar src={userPhotoURL} alt="Avatar" />
+							<Avatar src={snap.profile.photoURL} alt="Avatar" />
 						</Button>
 					</Tooltip>
 					<Menu
 						id="basic-menu"
 						anchorEl={anchorEl}
 						open={open}
-						onClose={handleClose}
+						onClose={handleMenuClose}
 						MenuListProps={{
 							'aria-labelledby': 'basic-button',
 						}}
 					>
-						<MenuItem onClick={handleClose}>Profile</MenuItem>
+						<MenuItem onClick={handleMenuClose}>Profile</MenuItem>
 						<MenuItem
 							onClick={() => {
-								handleClose();
+								handleMenuClose();
 								handleSignOut();
 							}}
 						>
