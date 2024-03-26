@@ -1,32 +1,24 @@
 import { useEffect } from 'react';
-import { proxy } from 'valtio';
 
 import auth from '../config';
-
-const profileState = proxy({
-	isSignedIn: false,
-	profile: {
-		displayName: '',
-		photoURL: '',
-	},
-});
+import { userProfileState } from '../state';
 
 export const useUserProfile = () => {
 	useEffect(() => {
 		const unsubscribe = auth.onAuthStateChanged((user) => {
 			if (user) {
-				profileState.isSignedIn = true;
-				profileState.profile.displayName = user.displayName || '';
-				profileState.profile.photoURL = user.photoURL || '';
+				userProfileState.isSignedIn = true;
+				userProfileState.profile.displayName = user.displayName || '';
+				userProfileState.profile.photoURL = user.photoURL || '';
 			} else {
-				profileState.isSignedIn = false;
-				profileState.profile.displayName = '';
-				profileState.profile.photoURL = '';
+				userProfileState.isSignedIn = false;
+				userProfileState.profile.displayName = '';
+				userProfileState.profile.photoURL = '';
 			}
 		});
 
 		return () => unsubscribe();
 	}, []);
 
-	return profileState;
+	return userProfileState;
 };
