@@ -23,7 +23,7 @@ interface Props {
 	uri: string;
 }
 
-const MainBar: FC<Props> = ({ uri }) => {
+export const MainBar: FC<Props> = ({ uri }) => {
 	const [sidebarOpen, setSidebarOpen] = useState(false);
 
 	const handleDrawerToggle = () => {
