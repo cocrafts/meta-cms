@@ -1,5 +1,6 @@
 'use client';
 
+import type { FC } from 'react';
 import { Fragment, useState } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
@@ -12,12 +13,17 @@ import {
 	Toolbar,
 	Typography,
 } from '@mui/material';
+import Image from 'next/image';
 import Link from 'next/link';
 
 import Sidebar from './sidebar';
 import SigninWithGoogleButton from './signInWithGoogleButton';
 
-const MainBar = () => {
+interface Props {
+	uri: string;
+}
+
+const MainBar: FC<Props> = ({ uri }) => {
 	const [sidebarOpen, setSidebarOpen] = useState(false);
 
 	const handleDrawerToggle = () => {
@@ -33,12 +39,16 @@ const MainBar = () => {
 						aria-label="open drawer"
 						edge="start"
 						onClick={handleDrawerToggle}
+						sx={{ mr: 2 }}
 					>
 						<MenuIcon />
 					</IconButton>
-					<Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+					<Link href="/">
+						<Image src={uri} alt="Walless logo" width={50} height={50} />
+					</Link>
+					<Typography variant="h6" component="div" sx={{ flexGrow: 1, ml: 1 }}>
 						<Link href="/" style={styles.link}>
-							MetaCMS
+							Wapi
 						</Link>
 					</Typography>
 					<InputBase
@@ -72,7 +82,7 @@ const MainBar = () => {
 				}}
 				sx={styles.inputBase}
 			>
-				<Sidebar handleDrawerToggle={handleDrawerToggle} />
+				<Sidebar handleDrawerToggle={handleDrawerToggle} uri={uri} />
 			</Drawer>
 		</Fragment>
 	);

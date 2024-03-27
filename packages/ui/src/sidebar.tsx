@@ -7,20 +7,22 @@ import {
 	Storage,
 } from '@mui/icons-material';
 import { Box, Divider, List, Typography } from '@mui/material';
+import Image from 'next/image';
 import Link from 'next/link';
 
 import SidebarItem from './sideBarItem';
 
 interface SidebarProps {
 	handleDrawerToggle: () => void;
+	uri: string;
 }
 
-const Sidebar: FC<SidebarProps> = ({ handleDrawerToggle }) => {
+const Sidebar: FC<SidebarProps> = ({ handleDrawerToggle, uri }) => {
 	return (
 		<Box onClick={handleDrawerToggle}>
 			<Typography variant="h6" sx={styles.title}>
 				<Link href="/" style={styles.linkTitle}>
-					MetaCMS
+					<Image src={uri} alt="Walless logo" width={50} height={50} />
 				</Link>
 			</Typography>
 			<Divider />

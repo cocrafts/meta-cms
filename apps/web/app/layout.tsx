@@ -13,7 +13,7 @@ const RootLayout: FC<Props> = ({ children }) => {
 		<html lang="en">
 			<body>
 				<CssBaseline />
-				<MainBar />
+				<MainBar uri="/walless-icon.svg" />
 				<Container maxWidth="lg">{children}</Container>
 			</body>
 		</html>
