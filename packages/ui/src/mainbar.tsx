@@ -46,9 +46,13 @@ const MainBar: FC<Props> = ({ uri }) => {
 					<Link href="/">
 						<Image src={uri} alt="Walless logo" width={50} height={50} />
 					</Link>
-					<Typography variant="h6" component="div" sx={{ flexGrow: 1, ml: 1 }}>
+					<Typography
+						variant="h6"
+						component="div"
+						sx={{ flexGrow: 1, ml: 0.5 }}
+					>
 						<Link href="/" style={styles.link}>
-							Wapi
+							Metapi
 						</Link>
 					</Typography>
 					<InputBase
