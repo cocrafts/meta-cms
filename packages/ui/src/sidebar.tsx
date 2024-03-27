@@ -17,7 +17,7 @@ interface SidebarProps {
 	uri: string;
 }
 
-const Sidebar: FC<SidebarProps> = ({ handleDrawerToggle, uri }) => {
+export const Sidebar: FC<SidebarProps> = ({ handleDrawerToggle }) => {
 	return (
 		<Box onClick={handleDrawerToggle}>
 			<Typography variant="h6" sx={styles.title}>

@@ -8,7 +8,7 @@ interface SidebarItemProps {
 	icon: JSX.Element;
 }
 
-const SidebarItem: FC<SidebarItemProps> = ({ href, text, icon }) => (
+export const SidebarItem: FC<SidebarItemProps> = ({ href, text, icon }) => (
 	<ListItem disablePadding sx={styles.listItem}>
 		<ListItemButton component={Link} href={href}>
 			{icon}

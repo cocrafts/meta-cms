@@ -19,11 +19,7 @@ import Link from 'next/link';
 import Sidebar from './sidebar';
 import SigninWithGoogleButton from './signInWithGoogleButton';
 
-interface Props {
-	uri: string;
-}
-
-const MainBar: FC<Props> = ({ uri }) => {
+export const MainBar = () => {
 	const [sidebarOpen, setSidebarOpen] = useState(false);
 
 	const handleDrawerToggle = () => {

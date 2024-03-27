@@ -12,7 +12,7 @@ import {
 } from '../../../apps/web/app/utils/authGG';
 import { useUserProfile } from '../../../apps/web/app/utils/hook/index';
 
-const SigninWithGoogleButton = () => {
+export const SigninWithGoogleButton = () => {
 	const userProfile = useUserProfile();
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
