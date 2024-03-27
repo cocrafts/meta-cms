@@ -10,15 +10,27 @@
   "devDependencies": {
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
+    "@types/cors": "^2.8.17",
+    "@walless/eslint-config": "^0.0.8",
+    "@walless/tsconfig": "^0.0.1",
     "prettier": "^3.1.1",
     "turbo": "latest"
   },
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "npm@9.8.1",
   "workspaces": [
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "dependencies": {
+    "@emotion/cache": "^11.11.0",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.15.11",
+    "@mui/material": "^5.15.11",
+    "@mui/material-nextjs": "^5.15.11",
+    "firebase": "^10.8.1",
+    "valtio": "^1.13.2"
+  }
 }
