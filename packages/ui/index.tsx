@@ -1,3 +1,3 @@
-export { default as MainBar } from './src/mainbar';
-export { default as SideBar } from './src/sidebar';
-export { default as SignInWithGoogleButton } from './src/signInWithGoogleButton';
+export * from './src/mainbar';
+export * from './src/sidebar';
+export * from './src/signInWithGoogleButton';

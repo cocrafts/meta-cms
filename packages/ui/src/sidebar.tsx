@@ -15,7 +15,7 @@ interface SidebarProps {
 	handleDrawerToggle: () => void;
 }
 
-const Sidebar: FC<SidebarProps> = ({ handleDrawerToggle }) => {
+export const Sidebar: FC<SidebarProps> = ({ handleDrawerToggle }) => {
 	return (
 		<Box onClick={handleDrawerToggle}>
 			<Typography variant="h6" sx={styles.title}>

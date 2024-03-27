@@ -17,7 +17,7 @@ import Link from 'next/link';
 import Sidebar from './sidebar';
 import SigninWithGoogleButton from './signInWithGoogleButton';
 
-const MainBar = () => {
+export const MainBar = () => {
 	const [sidebarOpen, setSidebarOpen] = useState(false);
 
 	const handleDrawerToggle = () => {
