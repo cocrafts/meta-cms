@@ -1,15 +1,24 @@
 import { json } from 'body-parser';
 import cors from 'cors';
 
-import { prepareAuthContext } from './middleware/verifyToken';
+import { authContext } from './middleware/jwt';
+import { auth } from './utils/firebase';
+import type { Request, Response } from './utils/helper';
 
-export const configure = async (express) => {
+const authContextMiddleware = authContext({
+	contextKey: 'decodedToken',
+	verifyJwt: async (jwt) => auth.verifyIdToken(jwt),
+});
+
+/* eslint-disable-next-line */
+export const configure = async (express: any) => {
 	const app = express();
+
 	app.use(json());
 	app.use(cors());
-	app.use(prepareAuthContext);
+	app.use(authContextMiddleware);
 
-	app.post('/api/signin', (req, res) => {
+	app.post('/api/signin', (req: Request, res: Response) => {
 		res.json(req.decodedToken);
 	});
 
