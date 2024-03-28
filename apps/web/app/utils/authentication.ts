@@ -2,7 +2,8 @@ import { signOut } from 'firebase/auth';
 import firebase from 'firebase/compat/app';
 
 import auth from './config';
-import { userProfileState } from './state';
+import { environments } from './config';
+import { userProfileFromFirebase, userProfileState } from './state';
 
 export const handleSignInWithGG = async () => {
 	const provider = new firebase.auth.GoogleAuthProvider();
@@ -11,8 +12,7 @@ export const handleSignInWithGG = async () => {
 		const user = result.user;
 		if (user) {
 			const firebaseUserIdToken = await user.getIdToken();
-			console.log(firebaseUserIdToken);
-			const response = await fetch('http://localhost:3005/api/signin', {
+			const response = await fetch(`${environments.apiEndpoint}/api/signin`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -20,8 +20,7 @@ export const handleSignInWithGG = async () => {
 				},
 				body: JSON.stringify({ token: firebaseUserIdToken }),
 			});
-			const data = await response.json();
-			console.log(data);
+			await response.json();
 		}
 	} catch (error) {
 		console.error(error);
@@ -32,7 +31,7 @@ export const handleSignOut = async () => {
 	try {
 		await signOut(auth);
 		userProfileState.isSignedIn = false;
-		userProfileState.profile.photoURL = '';
+		userProfileState.profile = userProfileFromFirebase(null);
 	} catch (error) {
 		console.error(error);
 	}

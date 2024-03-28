@@ -1,6 +1,7 @@
 import type { FC, ReactNode } from 'react';
 import { Container, CssBaseline } from '@mui/material';
-import { MainBar } from '@repo/ui';
+
+import MainBar from './components/MainBar';
 
 import './globals.css';
 
@@ -13,7 +14,7 @@ const RootLayout: FC<Props> = ({ children }) => {
 		<html lang="en">
 			<body>
 				<CssBaseline />
-				<MainBar uri="/walless-icon.svg" />
+				<MainBar />
 				<Container maxWidth="lg">{children}</Container>
 			</body>
 		</html>

@@ -1,6 +1,5 @@
 'use client';
 
-import type { FC } from 'react';
 import { Fragment, useState } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
@@ -15,15 +14,18 @@ import {
 } from '@mui/material';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useSnapshot } from 'valtio';
 
-import Sidebar from './sidebar';
-import SigninWithGoogleButton from './signInWithGoogleButton';
+import { useBootLoader } from '../utils/hook';
+import { userProfileState } from '../utils/state';
 
-interface Props {
-	uri: string;
-}
+import GGSignInButton from './GGSignInButton';
+import Sidebar from './SideBar';
 
-export const MainBar: FC<Props> = ({ uri }) => {
+export const MainBar = () => {
+	useBootLoader();
+
+	useSnapshot(userProfileState);
 	const [sidebarOpen, setSidebarOpen] = useState(false);
 
 	const handleDrawerToggle = () => {
@@ -44,7 +46,12 @@ export const MainBar: FC<Props> = ({ uri }) => {
 						<MenuIcon />
 					</IconButton>
 					<Link href="/">
-						<Image src={uri} alt="Walless logo" width={50} height={50} />
+						<Image
+							src="/walless-icon.svg"
+							alt="Walless logo"
+							width={50}
+							height={50}
+						/>
 					</Link>
 					<Typography
 						variant="h6"
@@ -74,7 +81,7 @@ export const MainBar: FC<Props> = ({ uri }) => {
 							<NotificationsIcon />
 						</Badge>
 					</IconButton>
-					<SigninWithGoogleButton />
+					<GGSignInButton />
 				</Toolbar>
 			</AppBar>
 			<Drawer
@@ -86,7 +93,7 @@ export const MainBar: FC<Props> = ({ uri }) => {
 				}}
 				sx={styles.inputBase}
 			>
-				<Sidebar handleDrawerToggle={handleDrawerToggle} uri={uri} />
+				<Sidebar handleDrawerToggle={handleDrawerToggle} />
 			</Drawer>
 		</Fragment>
 	);
