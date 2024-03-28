@@ -1,6 +1,7 @@
 import type { FC, ReactNode } from 'react';
 import { Container, CssBaseline } from '@mui/material';
-import { MainBar } from '@repo/ui';
+
+import MainBar from './components/MainBar';
 
 import './globals.css';
 

@@ -12,12 +12,20 @@ import {
 	Toolbar,
 	Typography,
 } from '@mui/material';
+import Image from 'next/image';
 import Link from 'next/link';
+import { useSnapshot } from 'valtio';
 
-import Sidebar from './sidebar';
-import SigninWithGoogleButton from './signInWithGoogleButton';
+import { useBootLoader } from '../utils/hook';
+import { userProfileState } from '../utils/state';
+
+import GGSignInButton from './GGSignInButton';
+import Sidebar from './SideBar';
 
 export const MainBar = () => {
+	useBootLoader();
+
+	useSnapshot(userProfileState);
 	const [sidebarOpen, setSidebarOpen] = useState(false);
 
 	const handleDrawerToggle = () => {
@@ -33,12 +41,25 @@ export const MainBar = () => {
 						aria-label="open drawer"
 						edge="start"
 						onClick={handleDrawerToggle}
+						sx={{ mr: 2 }}
 					>
 						<MenuIcon />
 					</IconButton>
-					<Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+					<Link href="/">
+						<Image
+							src="/walless-icon.svg"
+							alt="Walless logo"
+							width={50}
+							height={50}
+						/>
+					</Link>
+					<Typography
+						variant="h6"
+						component="div"
+						sx={{ flexGrow: 1, ml: 0.5 }}
+					>
 						<Link href="/" style={styles.link}>
-							MetaCMS
+							Metapi
 						</Link>
 					</Typography>
 					<InputBase
@@ -60,7 +81,7 @@ export const MainBar = () => {
 							<NotificationsIcon />
 						</Badge>
 					</IconButton>
-					<SigninWithGoogleButton />
+					<GGSignInButton />
 				</Toolbar>
 			</AppBar>
 			<Drawer

@@ -1,19 +1,13 @@
 'use client';
 
 import type { MouseEvent } from 'react';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import GoogleIcon from '@mui/icons-material/Google';
 import { Avatar, Button, Menu, MenuItem, Tooltip } from '@mui/material';
-import { useSnapshot } from 'valtio';
 
-import {
-	handleSignInWithGG,
-	handleSignOut,
-} from '../../../apps/web/app/utils/authGG';
-import { useUserProfile } from '../../../apps/web/app/utils/hook/index';
+import { profileActions, userProfileState } from '../utils/state';
 
-export const SigninWithGoogleButton = () => {
-	const userProfile = useUserProfile();
+export const GGSignInButton = () => {
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
 	const open = Boolean(anchorEl);
@@ -24,10 +18,14 @@ export const SigninWithGoogleButton = () => {
 		setAnchorEl(null);
 	};
 
-	const snap = useSnapshot(userProfile);
+	const handleSignOutClick = () => {
+		handleMenuClose();
+		profileActions.signOut();
+	};
+
 	return (
-		<>
-			{snap.isSignedIn ? (
+		<Fragment>
+			{userProfileState.isSignedIn ? (
 				<>
 					<Tooltip title="Account settings">
 						<Button
@@ -38,7 +36,7 @@ export const SigninWithGoogleButton = () => {
 							aria-expanded={open ? 'true' : undefined}
 							onClick={handleMenuOpen}
 						>
-							<Avatar src={snap.profile.photoURL} alt="Avatar" />
+							<Avatar src={userProfileState.profile.avatarUrl} alt="Avatar" />
 						</Button>
 					</Tooltip>
 					<Menu
@@ -51,27 +49,20 @@ export const SigninWithGoogleButton = () => {
 						}}
 					>
 						<MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-						<MenuItem
-							onClick={() => {
-								handleMenuClose();
-								handleSignOut();
-							}}
-						>
-							Logout
-						</MenuItem>
+						<MenuItem onClick={handleSignOutClick}>Logout</MenuItem>
 					</Menu>
 				</>
 			) : (
 				<Button
 					color="inherit"
-					onClick={handleSignInWithGG}
+					onClick={profileActions.googleSignIn}
 					startIcon={<GoogleIcon />}
 				>
 					Sign in with GG
 				</Button>
 			)}
-		</>
+		</Fragment>
 	);
 };
 
-export default SigninWithGoogleButton;
+export default GGSignInButton;
