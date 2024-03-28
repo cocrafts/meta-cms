@@ -7,14 +7,12 @@ import {
 	Storage,
 } from '@mui/icons-material';
 import { Box, Divider, List, Typography } from '@mui/material';
+import { SidebarItem } from '@repo/ui';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import SidebarItem from './sideBarItem';
-
 interface SidebarProps {
 	handleDrawerToggle: () => void;
-	uri: string;
 }
 
 export const Sidebar: FC<SidebarProps> = ({ handleDrawerToggle }) => {
@@ -22,7 +20,12 @@ export const Sidebar: FC<SidebarProps> = ({ handleDrawerToggle }) => {
 		<Box onClick={handleDrawerToggle}>
 			<Typography variant="h6" sx={styles.title}>
 				<Link href="/" style={styles.linkTitle}>
-					<Image src={uri} alt="Walless logo" width={50} height={50} />
+					<Image
+						src="/walless-icon.svg"
+						alt="Walless logo"
+						width={50}
+						height={50}
+					/>
 				</Link>
 			</Typography>
 			<Divider />

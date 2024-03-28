@@ -11,6 +11,10 @@ const firebaseConfig = {
 	appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
+export const environments = {
+	apiEndpoint: process.env.NEXT_PUBLIC_API_ENDPOINT,
+};
+
 if (!firebase.apps.length) {
 	firebase.initializeApp(firebaseConfig);
 }
