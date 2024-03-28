@@ -1,11 +1,11 @@
-import type { FC } from 'react';
+import type { FC, ReactNode } from 'react';
 import { ListItem, ListItemButton, Typography } from '@mui/material';
 import Link from 'next/link';
 
 interface SidebarItemProps {
 	href: string;
 	text: string;
-	icon: JSX.Element;
+	icon: ReactNode;
 }
 
 export const SidebarItem: FC<SidebarItemProps> = ({ href, text, icon }) => (
